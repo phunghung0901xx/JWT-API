@@ -14,7 +14,6 @@ import React from 'react';
     try {
       const res= await axios.post("https://uit-furniture-shop.herokuapp.com/api/auth/login",{username,password});
       setUser(res.data);
-      console.log(user);
       navigate('/Success')
      
     }
@@ -23,7 +22,7 @@ import React from 'react';
     }
   }
   const onFinish = (values) => {
-    console.log('Success:', values);
+    // console.log('Success:', values);
   };
 
   const onFinishFailed = (errorInfo) => {
