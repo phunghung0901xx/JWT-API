@@ -1,11 +1,27 @@
+import axios from 'axios';
+import { useNavigate } from 'react-router';
+import { useState } from "react";
 import { Button, Checkbox, Form, Input } from 'antd';
 import React from 'react';
-import { useState } from 'react';
-const Login = () => {
-    const [username,Setusername] = useState('')
-    const [password,Setpassword] = useState('')
 
-    
+ function Login () {
+  const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+  const [password,setPassword]= useState()
+  const [username,setUsername]= useState()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res= await axios.post("https://uit-furniture-shop.herokuapp.com/api/auth/login",{username,password});
+      setUser(res.data);
+      console.log(user);
+      navigate('/Success')
+     
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
   const onFinish = (values) => {
     console.log('Success:', values);
   };
@@ -31,6 +47,7 @@ const Login = () => {
       autoComplete="off"
     >
       <Form.Item
+        onChange={(e) =>setUsername(e.target.value)}
         label="Username"
         name="username"
         rules={[
@@ -39,12 +56,12 @@ const Login = () => {
             message: 'Please input your username!',
           },
         ]}
-       
       >
         <Input />
       </Form.Item>
 
       <Form.Item
+        onChange={(e) =>setPassword(e.target.value)}
         label="Password"
         name="password"
         rules={[
@@ -74,7 +91,7 @@ const Login = () => {
           span: 16,
         }}
       >
-        <Button type="primary" htmlType="submit">
+        <Button onClick={handleSubmit} type="primary" htmlType="submit">
           Submit
         </Button>
       </Form.Item>
@@ -82,4 +99,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login
